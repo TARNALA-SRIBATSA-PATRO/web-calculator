@@ -16,24 +16,31 @@ function handleInput(value) {
     }
 
     if (value == '=') {
-        // Replace percentage part of the string
-        if (string.includes('%')) {
-            string = string.replace(/(\d+)%/g, (match, number) => {
-                return number / 100;
-            });
+        // Check if the input is empty or only contains operators
+        if (string.trim() === "" || /^[+\-*/%]+$/.test(string)) {
+            input.value = "Error!"; // error message
+            string = "";
+        } else {
+            // Replace percentage part of the string
+            if (string.includes('%')) {
+                string = string.replace(/(\d+)%/g, (match, number) => {
+                    return number / 100;
+                });
+            }
+            try {
+                string = eval(string);
+                input.value = string;
+                evaluated = true; // Set to true after evaluation
+            } catch (error) {
+                input.value = "Error!";//error message
+                string = "";
+            }
         }
-        string = eval(string);
-        input.value = string;
-        evaluated = true; // Set to true after evaluation
-    }
-
-    else if (value == 'Ac' || value.toLowerCase() == 'c') {
+    } else if (value == 'Ac' || value.toLowerCase() == 'c') {
         string = "";
         input.value = string;
         evaluated = false; // Reset evaluation status
-    }
-
-    else if (value == 'DEL' || value == 'Backspace') {
+    } else if (value == 'DEL' || value == 'Backspace') {
         if (evaluated) {
             string = ""; // Clear the input if the expression was evaluated
             input.value = string;
@@ -47,14 +54,24 @@ function handleInput(value) {
                 input.value = string;
             }
         }
-    }
-
-    else {
+    } else {
         if (evaluated) {
-            string = ""; // Clear the input if new input is provided after evaluation
+            if (['+', '-', '*', '/'].includes(value)) {
+                // If evaluated and operator is pressed, continue calculation with current result
+                string += value;
+            } else {
+                // If a number is pressed after evaluation, start a new calculation
+                string = value;
+            }
             evaluated = false; // Reset evaluation status
+        } else {
+            // Replace the last operator if a new operator is entered right after another operator
+            if (['+', '-', '*', '/'].includes(value) && ['+', '-', '*', '/'].includes(string.slice(-1))) {
+                string = string.slice(0, -1) + value;
+            } else {
+                string += value;
+            }
         }
-        string += value;
         input.value = string.replace(/\*/g, 'X'); // Replace '*' with 'X' for display
     }
 }
@@ -83,8 +100,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-
-//get year for copyright
+// Get year for copyright
 document.addEventListener('DOMContentLoaded', () => {
     const yearSpan = document.getElementById('year');
     if (yearSpan) {

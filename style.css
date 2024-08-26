@@ -6,7 +6,6 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
     overflow: hidden; /* Prevent scrolling beyond the content */
-
 }
 
 body {
@@ -35,8 +34,12 @@ input {
     box-shadow: 0px 3px 15px rgba(84, 84, 84, 0.1);
     font-size: 40px;
     text-align: right;
-    cursor: pointer;
+    cursor: default; /* Change cursor to default since it's read-only */
     color: #ffffff;
+}
+
+input:focus {
+    outline: none; /* Ensure no outline when focused/clicked */
 }
 
 input::placeholder {
@@ -55,7 +58,14 @@ button {
     box-shadow: -8px -8px 15px rgba(255, 255, 255, 0.1);
     cursor: pointer;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    -webkit-tap-highlight-color: transparent; /* Remove blue tap highlight on mobile */
+    -webkit-touch-callout: none; /* Disable callout on long tap */
+    user-select: none; /* Prevent selection on tap */
+}
 
+/* Remove the blue focus outline */
+button:focus {
+    outline: none;
 }
 
 button:active {
@@ -80,4 +90,12 @@ footer {
     position: absolute; /* Position it at the bottom */
     bottom: 0;
     left: 0;
+}
+footer a {
+    color: #bab0b0;
+    text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    /* Add your responsive styles here */
 }

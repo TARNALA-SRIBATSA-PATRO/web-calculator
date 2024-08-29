@@ -55,6 +55,11 @@ function handleInput(value) {
             }
         }
     } else {
+        // Added condition to prevent leading 0 or 00
+        if (string === "" && (value === "0" || value === "00")) {
+            return;
+        }
+
         if (evaluated) {
             if (['+', '-', '*', '/'].includes(value)) {
                 // If evaluated and operator is pressed, continue calculation with current result

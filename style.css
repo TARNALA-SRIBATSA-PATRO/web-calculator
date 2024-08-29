@@ -97,5 +97,20 @@ footer a {
 }
 
 @media (max-width: 600px) {
-    /* Add your responsive styles here */
+    input {
+        width: 240px;
+    }
+
+    .calculator {
+        width: 300px;
+    }
+
+    button {
+        width: 40px;
+        height: 40px;
+    }
+
+    footer a {
+        font-size: smaller;
+    }
 }
